@@ -1911,65 +1911,196 @@ function buildPipetVolumeModel(group) {
    ========================================================================== */
 
 /**
- * Populate Apparatus Catalog in Side Column DOM (Shows 16 Tools)
+ * Catalog Theme & Grouping
+ */
+const CatalogTheme = {
+  erlenmeyer: { bg: '#2563eb', color: '#ffffff', group: 'wadah' },
+  beaker: { bg: '#0284c7', color: '#ffffff', group: 'wadah' },
+  cylinder: { bg: '#0891b2', color: '#ffffff', group: 'ukur' },
+  pipette: { bg: '#e11d48', color: '#ffffff', group: 'ukur' },
+  bunsen: { bg: '#d97706', color: '#ffffff', group: 'pemanas' },
+  testtube: { bg: '#4f46e5', color: '#ffffff', group: 'wadah' },
+  volumetric: { bg: '#7c3aed', color: '#ffffff', group: 'ukur' },
+  burette: { bg: '#2563eb', color: '#ffffff', group: 'ukur' },
+  corong: { bg: '#059669', color: '#ffffff', group: 'penunjang' },
+  cawan: { bg: '#ea580c', color: '#ffffff', group: 'pemanas' },
+  arloji: { bg: '#0284c7', color: '#ffffff', group: 'penunjang' },
+  mortar: { bg: '#475569', color: '#ffffff', group: 'penunjang' },
+  spatula: { bg: '#64748b', color: '#ffffff', group: 'penunjang' },
+  tripod: { bg: '#334155', color: '#ffffff', group: 'pemanas' },
+  termometer: { bg: '#dc2626', color: '#ffffff', group: 'ukur' },
+  pipetvolume: { bg: '#0284c7', color: '#ffffff', group: 'ukur' }
+};
+
+let currentCatalogFilter = 'all';
+let currentCatalogSearch = '';
+
+/**
+ * Populate Apparatus Catalog in Side Column DOM & Full-Width Gallery (16 Tools)
  */
 function populateApparatusCatalog() {
   const container = document.getElementById('apparatus-catalog-list');
   const countBadge = document.getElementById('apparatus-count');
-  if (!container) return;
+  const quickSelect = document.getElementById('apparatus-quick-select');
 
   if (countBadge) countBadge.textContent = `${ApparatusCatalog.length} Alat 3D`;
-  container.innerHTML = '';
 
-  const catalogTheme = {
-    erlenmeyer: { bg: '#2563eb', color: '#ffffff' },
-    beaker: { bg: '#0284c7', color: '#ffffff' },
-    cylinder: { bg: '#0891b2', color: '#ffffff' },
-    pipette: { bg: '#e11d48', color: '#ffffff' },
-    bunsen: { bg: '#d97706', color: '#ffffff' },
-    testtube: { bg: '#4f46e5', color: '#ffffff' },
-    volumetric: { bg: '#7c3aed', color: '#ffffff' },
-    burette: { bg: '#2563eb', color: '#ffffff' },
-    corong: { bg: '#059669', color: '#ffffff' },
-    cawan: { bg: '#ea580c', color: '#ffffff' },
-    arloji: { bg: '#0284c7', color: '#ffffff' },
-    mortar: { bg: '#475569', color: '#ffffff' },
-    spatula: { bg: '#64748b', color: '#ffffff' },
-    tripod: { bg: '#334155', color: '#ffffff' },
-    termometer: { bg: '#dc2626', color: '#ffffff' },
-    pipetvolume: { bg: '#0284c7', color: '#ffffff' }
-  };
+  // 1. Side Quick Bar
+  if (container) {
+    container.innerHTML = '';
+    ApparatusCatalog.forEach((item, idx) => {
+      const btn = document.createElement('button');
+      btn.className = `apparatus-item-btn ${idx === 0 ? 'active' : ''}`;
+      btn.id = `cat-btn-${item.id}`;
+      btn.dataset.id = item.id;
+      btn.onclick = () => selectApparatus(item.id);
 
-  ApparatusCatalog.forEach((item, idx) => {
-    const btn = document.createElement('button');
-    btn.className = `apparatus-item-btn ${idx === 0 ? 'active' : ''}`;
-    btn.id = `cat-btn-${item.id}`;
-    btn.onclick = () => selectApparatus(item.id);
+      const theme = CatalogTheme[item.id] || { bg: '#0284c7', color: '#ffffff' };
 
-    const theme = catalogTheme[item.id] || { bg: '#0284c7', color: '#ffffff' };
+      btn.innerHTML = `
+        <div class="cat-icon-badge" style="background: ${theme.bg}; color: ${theme.color};">
+          <i class="fa-solid ${item.icon}"></i>
+        </div>
+        <div class="cat-text-wrap">
+          <span class="cat-name">${item.name}</span>
+          <span class="cat-category">${item.category}</span>
+        </div>
+      `;
+      container.appendChild(btn);
+    });
+  }
 
-    btn.innerHTML = `
-      <div class="cat-icon-badge" style="background: ${theme.bg}; color: ${theme.color};">
-        <i class="fa-solid ${item.icon}"></i>
-      </div>
-      <div class="cat-text-wrap">
-        <span class="cat-name">${item.name}</span>
-        <span class="cat-category">${item.category}</span>
+  // 2. Quick Dropdown Selector
+  if (quickSelect) {
+    quickSelect.innerHTML = '';
+    ApparatusCatalog.forEach(item => {
+      const opt = document.createElement('option');
+      opt.value = item.id;
+      opt.textContent = item.name;
+      quickSelect.appendChild(opt);
+    });
+  }
+
+  // 3. Full-Width Responsive Gallery Grid
+  renderApparatusGridCards();
+}
+
+/**
+ * Render Full-Width Responsive Cards Grid
+ */
+function renderApparatusGridCards() {
+  const grid = document.getElementById('apparatus-catalog-grid');
+  if (!grid) return;
+
+  grid.innerHTML = '';
+
+  const currentId = (Lab3DState && Lab3DState.currentApparatusId) ? Lab3DState.currentApparatusId : 'erlenmeyer';
+
+  const filtered = ApparatusCatalog.filter(item => {
+    const theme = CatalogTheme[item.id] || { group: 'penunjang' };
+    const matchCategory = (currentCatalogFilter === 'all') || (theme.group === currentCatalogFilter);
+    const q = currentCatalogSearch.trim().toLowerCase();
+    const matchSearch = !q || 
+      item.name.toLowerCase().includes(q) || 
+      item.category.toLowerCase().includes(q) || 
+      (item.function && item.function.toLowerCase().includes(q));
+    return matchCategory && matchSearch;
+  });
+
+  if (filtered.length === 0) {
+    grid.innerHTML = `
+      <div style="grid-column: 1 / -1; padding: 2.5rem 1rem; text-align: center; color: var(--text-muted);">
+        <i class="fa-solid fa-flask-vial" style="font-size: 2.5rem; color: #94a3b8; margin-bottom: 0.75rem;"></i>
+        <h4 style="color: #0f172a; margin-bottom: 0.25rem;">Tidak Ada Alat Laboratorium Ditemukan</h4>
+        <p style="font-size: 0.88rem;">Coba gunakan kata kunci pencarian lain atau pilih tab kategori lainnya.</p>
       </div>
     `;
-    container.appendChild(btn);
+    return;
+  }
+
+  filtered.forEach(item => {
+    const card = document.createElement('div');
+    const isActive = (item.id === currentId);
+    card.className = `apparatus-grid-card ${isActive ? 'active' : ''}`;
+    card.id = `gallery-card-${item.id}`;
+    card.dataset.id = item.id;
+    card.onclick = () => selectApparatus(item.id, true);
+
+    const theme = CatalogTheme[item.id] || { bg: '#0284c7', color: '#ffffff' };
+
+    card.innerHTML = `
+      <div class="card-active-indicator">
+        <i class="fa-solid fa-circle-check"></i> Aktif di 3D
+      </div>
+      <div class="card-top-row">
+        <div class="card-icon-box" style="background: ${theme.bg}; color: ${theme.color};">
+          <i class="fa-solid ${item.icon}"></i>
+        </div>
+        <div class="card-header-info">
+          <span class="card-tool-name">${item.name}</span>
+          <span class="card-category-tag">${item.category}</span>
+        </div>
+      </div>
+      <p class="card-func-desc">${item.function}</p>
+      <div class="card-cta-footer">
+        <span><i class="fa-solid fa-cube"></i> Eksplorasi 3D & Fungsi</span>
+        <i class="fa-solid fa-arrow-right"></i>
+      </div>
+    `;
+
+    grid.appendChild(card);
   });
 }
 
 /**
- * Select Apparatus from Catalog List
+ * Filter Catalog by Category
  */
-function selectApparatus(apparatusId) {
-  document.querySelectorAll('.apparatus-item-btn').forEach(btn => btn.classList.remove('active'));
-  const targetBtn = document.getElementById(`cat-btn-${apparatusId}`);
-  if (targetBtn) targetBtn.classList.add('active');
+function filterApparatusCatalog(groupKey) {
+  currentCatalogFilter = groupKey;
 
+  document.querySelectorAll('.catalog-filter-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.cat === groupKey);
+  });
+
+  renderApparatusGridCards();
+}
+
+/**
+ * Real-Time Search in Catalog
+ */
+function searchApparatusCatalog(query) {
+  currentCatalogSearch = query;
+  renderApparatusGridCards();
+}
+
+/**
+ * Select Apparatus from Catalog List or Grid Cards
+ */
+function selectApparatus(apparatusId, scrollUp = false) {
+  // Update Side Column Buttons
+  document.querySelectorAll('.apparatus-item-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.id === apparatusId);
+  });
+
+  // Update Grid Cards
+  document.querySelectorAll('.apparatus-grid-card').forEach(card => {
+    card.classList.toggle('active', card.dataset.id === apparatusId);
+  });
+
+  // Update Dropdown
+  const quickSelect = document.getElementById('apparatus-quick-select');
+  if (quickSelect) quickSelect.value = apparatusId;
+
+  // Load 3D model
   loadApparatusModel(apparatusId);
+
+  // Smooth scroll up if requested
+  if (scrollUp) {
+    const viewerSection = document.getElementById('canvas-3d-wrapper');
+    if (viewerSection) {
+      viewerSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }
 }
 
 /**

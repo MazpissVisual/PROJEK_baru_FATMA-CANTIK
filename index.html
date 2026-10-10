@@ -664,15 +664,18 @@
               </div>
             </div>
 
-            <!-- RIGHT COLUMN (50% SPLIT SCREEN): TULISAN FUNGSI & SPESIFIKASI ALAT -->
+            <!-- RIGHT COLUMN: TULISAN FUNGSI & SPESIFIKASI ALAT (JELAS, BESAR & RESPONSIF) -->
             <div class="viewer-side-col glass-panel">
               <div class="side-col-header">
                 <div class="side-title-group">
                   <h4><i class="fa-solid fa-microscope color-primary"></i> Penjelasan Fungsi & Spesifikasi</h4>
                   <span class="badge-count" id="apparatus-count">16 Alat 3D</span>
                 </div>
-                <!-- Quick Prev / Next Navigation -->
+                <!-- Quick Tool Switcher & Prev/Next Navigation -->
                 <div class="side-nav-btns">
+                  <select id="apparatus-quick-select" class="apparatus-quick-dropdown" onchange="selectApparatus(this.value)" title="Pilih Cepat Alat Laboratorium">
+                    <!-- Populated via JS -->
+                  </select>
                   <button class="btn btn-sm btn-outline" onclick="prevApparatus()" title="Lihat Alat Sebelumnya">
                     <i class="fa-solid fa-arrow-left"></i> Prev
                   </button>
@@ -682,36 +685,85 @@
                 </div>
               </div>
 
-              <!-- Selected Apparatus Detailed Educational Breakdown (TULISAN FUNGSI LENGKAP & JELAS) -->
+              <!-- Selected Apparatus Detailed Educational Breakdown (TULISAN FUNGSI LENGKAP & SANGAT JELAS) -->
               <div class="apparatus-detail-box" id="apparatus-educational-detail">
                 <div class="detail-card card-func">
-                  <h5><i class="fa-solid fa-circle-check color-emerald"></i> Fungsi Utama Alat:</h5>
+                  <div class="detail-card-badge badge-func"><i class="fa-solid fa-circle-check"></i> FUNGSI UTAMA ALAT</div>
+                  <h5>Fungsi & Kegunaan:</h5>
                   <p id="detail-function">Digunakan untuk menampung larutan, mereaksikan zat kimia, dan sebagai wadah titrat saat titrasi.</p>
                 </div>
 
                 <div class="detail-card card-mat">
-                  <h5><i class="fa-solid fa-shield-virus color-primary"></i> Material & Ketahanan Fisika/Kimia:</h5>
+                  <div class="detail-card-badge badge-mat"><i class="fa-solid fa-shield-virus"></i> SPESIFIKASI MATERIAL</div>
+                  <h5>Material & Ketahanan Fisika/Kimia:</h5>
                   <p id="detail-material">Kaca Borosilikat (Pyrex) tahan panas hingga 500°C dan tahan goncangan termal.</p>
                 </div>
 
                 <div class="detail-card card-mistake">
-                  <h5><i class="fa-solid fa-triangle-exclamation color-amber"></i> Kesalahan Umum yang Harus Dihindari:</h5>
+                  <div class="detail-card-badge badge-mistake"><i class="fa-solid fa-triangle-exclamation"></i> PERINGATAN KESELAMATAN</div>
+                  <h5>Kesalahan Umum yang Harus Dihindari:</h5>
                   <p id="detail-mistake">Bukan alat ukur presisi! Garis skala pada Erlenmeyer hanya bersifat estimasi perkiraan (toleransi ±5%).</p>
                 </div>
 
                 <div class="detail-card card-sop">
-                  <h5><i class="fa-solid fa-hand-holding-hand color-indigo"></i> Standar Prosedur Penggunaan (SOP):</h5>
+                  <div class="detail-card-badge badge-sop"><i class="fa-solid fa-hand-holding-hand"></i> SOP LABORATORIUM</div>
+                  <h5>Standar Prosedur Penggunaan (SOP):</h5>
                   <p id="detail-sop">Pegang leher labu dengan tiga jari saat mengaduk (swirling) larutan dengan gerakan memutar searah jarum jam.</p>
                 </div>
               </div>
 
-              <!-- Filter Selector Grid: Katalog 16 Alat Laboratorium -->
+              <!-- Compact Horizontal Quick Bar in Side Column -->
               <div class="catalog-section-title">
-                <h5><i class="fa-solid fa-boxes-stacked color-primary"></i> Pilih Alat Laboratorium Lainnya:</h5>
+                <h5><i class="fa-solid fa-list-check color-primary"></i> Pilihan Cepat Alat 3D:</h5>
               </div>
               <div class="apparatus-list-scroller" id="apparatus-catalog-list">
                 <!-- Dynamically Rendered via JS -->
               </div>
+            </div>
+          </div>
+
+          <!-- FULL-WIDTH DEDICATED APPARATUS CATALOG & CARD GRID -->
+          <div class="apparatus-catalog-section glass-panel" id="apparatus-gallery-section">
+            <div class="catalog-section-header">
+              <div class="catalog-header-text">
+                <div class="badge-catalog-pulse">
+                  <i class="fa-solid fa-cubes"></i> KATALOG ALAT LABORATORIUM KIMIA
+                </div>
+                <h3>Eksplorasi Lengkap 16 Alat Laboratorium Kimia 3D</h3>
+                <p>Klik salah satu kartu alat di bawah untuk memuat simulasi 3D interaktif dan melihat penjelasan fungsinya secara mendalam di atas.</p>
+              </div>
+
+              <!-- Search Bar -->
+              <div class="catalog-search-wrap">
+                <div class="input-with-icon search-input-box">
+                  <i class="fa-solid fa-magnifying-glass input-icon"></i>
+                  <input type="text" id="apparatus-search-input" placeholder="Cari nama alat (misal: buret, pipet, erlenmeyer, bunsen)..." oninput="searchApparatusCatalog(this.value)">
+                </div>
+              </div>
+            </div>
+
+            <!-- Filter Categories Tabs -->
+            <div class="catalog-filter-bar" id="catalog-filter-bar">
+              <button class="catalog-filter-btn active" data-cat="all" onclick="filterApparatusCatalog('all')">
+                <i class="fa-solid fa-border-all"></i> Semua Alat (16)
+              </button>
+              <button class="catalog-filter-btn" data-cat="wadah" onclick="filterApparatusCatalog('wadah')">
+                <i class="fa-solid fa-flask"></i> Wadah Reaksi & Titrasi
+              </button>
+              <button class="catalog-filter-btn" data-cat="ukur" onclick="filterApparatusCatalog('ukur')">
+                <i class="fa-solid fa-ruler-vertical"></i> Pengukuran Volume & Suhu
+              </button>
+              <button class="catalog-filter-btn" data-cat="pemanas" onclick="filterApparatusCatalog('pemanas')">
+                <i class="fa-solid fa-fire-burner"></i> Pemanasan & Pembakar
+              </button>
+              <button class="catalog-filter-btn" data-cat="penunjang" onclick="filterApparatusCatalog('penunjang')">
+                <i class="fa-solid fa-screwdriver-wrench"></i> Alat Penunjang & Preparasi
+              </button>
+            </div>
+
+            <!-- The Grid of 16 Tools -->
+            <div class="apparatus-grid-cards" id="apparatus-catalog-grid">
+              <!-- Dynamically rendered via JS -->
             </div>
           </div>
         </div>
