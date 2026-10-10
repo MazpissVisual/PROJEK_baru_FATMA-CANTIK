@@ -874,7 +874,7 @@ function jumpPBLPhase(phaseNum) {
   playWebAudioTone('click');
 }
 
-function loadPBLVideo(youtubeId = 'VoTqIij5HHs', title = 'Pengenalan & Penggunaan Alat Laboratorium Kimia', startTime = 9) {
+function loadPBLVideo(youtubeId = 'VoTqIij5HHs', title = 'Simulasi Kesalahan dalam Laboratorium Kimia', startTime = 9) {
   const iframe = document.getElementById('pbl-youtube-iframe');
   const titleDisp = document.getElementById('video-current-title');
   if (iframe) {
@@ -1078,21 +1078,19 @@ IDENTITAS PRAKTIKAN:
 - Nama Sekolah   : ${s.school}
 - Tanggal Simpan : ${new Date().toLocaleString('id-ID')}
 --------------------------------------------------------------------------------
-SKENARIO KASUS INVESTIGASI LABORATORIUM:
-Kasus Insiden Letupan & Tumpahan Larutan pada Pengenceran Asam Sulfat Pekat (H2SO4 98%)
-Praktikan tidak memakai sarung tangan nitril maupun goggles, mengukur volume 10 mL 
-asam menggunakan gelas beker besar dan bukan pipet ukur presisi, serta menuangkan 
-air langsung ke dalam asam pekat sehingga memicu pelepasan panas eksotermik dahsyat.
+SUMBER KASUS PENYELIDIKAN:
+Video Studi Kasus: Simulasi Kesalahan dalam Laboratorium Kimia (YouTube)
+Model Pembelajaran: Problem Based Learning (PBL) - Kurikulum Merdeka
 --------------------------------------------------------------------------------
-HASIL ANALISIS INVESTIGASI SISWA:
+HASIL ANALISIS PENYELIDIKAN PESERTA DIDIK:
 
-[FASE 1: Identifikasi Pelanggaran K3 & Kesalahan Prosedural]
+[FASE 1: Orientasi & Identifikasi Masalah serta Pelanggaran K3 pada Video]
 ${q1 || '(Belum diisi)'}
 
-[FASE 2: Pemilihan Alat Laboratorium Presisi & Prosedur Penanganan]
+[FASE 2: Penyelidikan Penyebab Masalah & Analisis Penggunaan Alat Laboratorium]
 ${q2 || '(Belum diisi)'}
 
-[FASE 3: Standar Operasional Prosedur (SOP) & Tanggap Darurat P3K]
+[FASE 3: Pengembangan Solusi Prosedural yang Benar, SOP K3, & Tanggap Darurat]
 ${q3 || '(Belum diisi)'}
 ================================================================================
 Tervalidasi secara digital oleh Sistem Laboratorium Virtual ChemLab 3D.
@@ -1707,17 +1705,17 @@ const DEFAULT_SAMPLE_LKPD = [
     name: 'Aisyah Putri',
     className: 'X.1',
     timestamp: '10/10/2026, 08:18:00',
-    q1: 'Kadar asam asetat pada label cuka kemasan di warung (tertulis 25%) perlu dibuktikan kebenarannya karena seringkali terdapat perbedaan konsentrasi yang memengaruhi rasa dan keasaman masakan.',
-    q2: 'Jika sampel asam cuka diencerkan dan dititrasi dengan larutan standar NaOH 0,1 M menggunakan indikator fenolftalein, maka kadar asam asetat sebenarnya dapat ditentukan melalui stoikiometri titik ekuivalen.',
-    q3: 'Volume rata-rata NaOH terpakai adalah 24,5 mL. Berdasarkan perhitungan stoikiometri M1 x V1 = M2 x V2, kadar asam asetat terhitung adalah 24,2%, membuktikan bahwa cuka memenuhi standar mutu perdagangan.'
+    q1: 'Berdasarkan pengamatan pada video, praktikan tidak mengenakan APD lengkap (tanpa sarung tangan dan kacamata goggle), bersikap ceroboh saat memegang alat kaca, dan menuangkan reagen tanpa membaca label botol secara cermat sehingga memicu bahaya kontaminasi dan iritasi.',
+    q2: 'Kesalahan terjadi akibat kelalaian memahami fungsi alat lab dan simbol bahaya. Praktikan memakai gelas beker biasa untuk mengukur volume presisi dan memanaskan larutan dengan mulut tabung menghadap ke arah praktikan lain, yang sangat berbahaya jika terjadi letupan.',
+    q3: 'Solusi SOP: Wajib memakai jas lab, goggle, dan sarung tangan sebelum mulai. Gunakan alat ukur berkalibrasi presisi seperti pipet ukur/labu volumetrik. Jika terjadi tumpahan reagen ke kulit, segera bilas di bawah air mengalir 15-20 menit dan laporkan kepada guru.'
   },
   {
     name: 'Muhammad Fathir',
     className: 'X.1',
     timestamp: '10/10/2026, 08:25:30',
-    q1: 'Banyak produk cuka dapur lokal tidak mencantumkan kadar asam asetat secara akurat, sehingga diperlukan uji laboratorium kuantitatif untuk perlindungan konsumen.',
-    q2: 'Kadar asam asetat dapat dihitung dengan titrasi asidimetri-alkalimetri dengan perubahan warna indikator PP dari tak berwarna menjadi merah muda seulas.',
-    q3: 'Didapatkan titik akhir titrasi pada volume NaOH 25,1 mL. Hasil analisis menunjukkan konsentrasi asam cuka mendekati 24,8% dengan galat presisi di bawah 1%.'
+    q1: 'Dalam tayangan video teramati praktikan menghirup uap bahan kimia secara langsung di atas mulut tabung reaksi, membawa reagen sambil bercanda, dan meninggalkan pembakar spirtus menyala tanpa pengawasan di dekat bahan mudah terbakar.',
+    q2: 'Penyebab insiden adalah kurangnya keterampilan teknik dasar lab. Praktikan belum menguasai teknik mengibas uap (wafting technique) dan tidak mengenali piktogram bahan mudah terbakar serta korosif pada botol reagen.',
+    q3: 'SOP perbaikan: Baca MSDS bahan kimia sebelum praktikum, lakukan pengujian zat beruap di lemari asam, padamkan pembakar spirtus dengan menutupkan penutupnya (bukan ditiup), serta sediakan kotak P3K dan eye-wash station di lab.'
   }
 ];
 

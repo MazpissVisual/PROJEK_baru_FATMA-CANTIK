@@ -39,6 +39,8 @@
         <div class="lab-overlay-tint"></div>
         <div class="lab-light-glow lab-glow-1"></div>
         <div class="lab-light-glow lab-glow-2"></div>
+        <div class="lab-light-glow lab-glow-3"></div>
+        <div class="lab-light-glow lab-glow-4"></div>
         
         <!-- Floating Chemical Formulas & Molecules (Menarik untuk Siswa SMA) -->
         <div class="floating-chem-elements" aria-hidden="true">
@@ -124,30 +126,11 @@
                 <i class="fa-solid fa-layer-group input-icon"></i>
                 <select id="student-class" required>
                   <option value="" disabled selected>-- Pilih Kelas Kamu --</option>
-                  <optgroup label="Kelas X (Fase E)">
-                    <option value="X.1">Kelas X.1</option>
-                    <option value="X.2">Kelas X.2</option>
-                    <option value="X.3">Kelas X.3</option>
-                    <option value="X.4">Kelas X.4</option>
-                    <option value="X.5">Kelas X.5</option>
-                    <option value="X MIPA 1">Kelas X MIPA 1</option>
-                    <option value="X MIPA 2">Kelas X MIPA 2</option>
-                  </optgroup>
-                  <optgroup label="Kelas XI (Fase F)">
-                    <option value="XI MIPA 1">Kelas XI MIPA 1</option>
-                    <option value="XI MIPA 2">Kelas XI MIPA 2</option>
-                    <option value="XI MIPA 3">Kelas XI MIPA 3</option>
-                    <option value="XI.1">Kelas XI.1</option>
-                    <option value="XI.2">Kelas XI.2</option>
-                    <option value="XI.3">Kelas XI.3</option>
-                  </optgroup>
-                  <optgroup label="Kelas XII (Fase F)">
-                    <option value="XII MIPA 1">Kelas XII MIPA 1</option>
-                    <option value="XII MIPA 2">Kelas XII MIPA 2</option>
-                    <option value="XII MIPA 3">Kelas XII MIPA 3</option>
-                    <option value="XII.1">Kelas XII.1</option>
-                    <option value="XII.2">Kelas XII.2</option>
-                  </optgroup>
+                  <option value="X.1">Kelas X.1</option>
+                  <option value="X.2">Kelas X.2</option>
+                  <option value="X.3">Kelas X.3</option>
+                  <option value="X.4">Kelas X.4</option>
+                  <option value="X.5">Kelas X.5</option>
                 </select>
               </div>
             </div>
@@ -185,51 +168,62 @@
     <!-- TOP NAVBAR (NAVIGASI UTAMA & STATUS SISWA)      -->
     <!-- ============================================== -->
     <header class="navbar glass-panel">
-      <div class="nav-brand">
+      <!-- 1. BRAND LOGO & TITLE -->
+      <div class="nav-brand" onclick="switchTab('beranda')" role="button" tabindex="0" title="ChemLab 3D - Beranda Utama">
         <div class="brand-logo">
           <i class="fa-solid fa-flask-vial"></i>
         </div>
         <div class="brand-text">
-          <span class="brand-title">ChemLab <span>3D</span></span>
-          <span class="brand-tag">Virtual Multimedia Lab</span>
+          <div class="brand-heading">
+            <span class="brand-title">ChemLab</span>
+            <span class="brand-badge">3D</span>
+          </div>
+          <span class="brand-desc">Virtual Chemistry Lab</span>
         </div>
       </div>
 
+      <!-- 2. MINIMALIST NAV LINKS (1 TEMA ICON KONSISTEN) -->
       <nav class="nav-links">
-        <button class="nav-item active" onclick="switchTab('beranda')" id="nav-btn-beranda">
-          <i class="fa-solid fa-house"></i> <span>Beranda & APD</span>
+        <button class="nav-item active" onclick="switchTab('beranda')" id="nav-btn-beranda" title="Beranda & APD Laboratorium">
+          <i class="fa-solid fa-house"></i>
+          <span>Beranda</span>
         </button>
-        <button class="nav-item" onclick="switchTab('materi')" id="nav-btn-materi">
-          <i class="fa-solid fa-cube"></i> <span>Materi 3D AR/VR</span>
+        <button class="nav-item" onclick="switchTab('materi')" id="nav-btn-materi" title="Materi 3D, Interaktif AR & VR">
+          <i class="fa-solid fa-cubes"></i>
+          <span>Materi 3D</span>
         </button>
-        <button class="nav-item" onclick="switchTab('praktikum')" id="nav-btn-praktikum">
-          <i class="fa-solid fa-vial-circle-check"></i> <span>Praktikum Maya</span>
+        <button class="nav-item" onclick="switchTab('praktikum')" id="nav-btn-praktikum" title="Simulasi Praktikum Maya Kimia">
+          <i class="fa-solid fa-flask"></i>
+          <span>Praktikum Maya</span>
         </button>
-        <button class="nav-item" onclick="switchTab('video')" id="nav-btn-video">
-          <i class="fa-solid fa-circle-play"></i> <span>Video PBL</span>
+        <button class="nav-item" onclick="switchTab('video')" id="nav-btn-video" title="Video Problem-Based Learning">
+          <i class="fa-solid fa-circle-play"></i>
+          <span>Video PBL</span>
         </button>
-        <button class="nav-item" onclick="switchTab('kuis')" id="nav-btn-kuis">
-          <i class="fa-solid fa-brain"></i> <span>Kuis Evaluasi</span>
+        <button class="nav-item" onclick="switchTab('kuis')" id="nav-btn-kuis" title="Kuis Evaluasi Pemahaman">
+          <i class="fa-solid fa-clipboard-question"></i>
+          <span>Kuis Evaluasi</span>
         </button>
-        <button class="nav-item" onclick="switchTab('refleksi')" id="nav-btn-refleksi">
-          <i class="fa-solid fa-book-journal-whills"></i> <span>Refleksi</span>
+        <button class="nav-item" onclick="switchTab('refleksi')" id="nav-btn-refleksi" title="Refleksi Pembelajaran Siswa">
+          <i class="fa-solid fa-pen-to-square"></i>
+          <span>Refleksi</span>
         </button>
-        <button class="nav-item" onclick="switchTab('sertifikat')" id="nav-btn-sertifikat">
-          <i class="fa-solid fa-award"></i> <span>Sertifikat</span>
+        <button class="nav-item" onclick="switchTab('sertifikat')" id="nav-btn-sertifikat" title="Sertifikat Kelulusan Resmi">
+          <i class="fa-solid fa-award"></i>
+          <span>Sertifikat</span>
         </button>
-        <button class="nav-item nav-item-teacher" onclick="handleTeacherNavClick()" id="nav-btn-guru">
-          <i class="fa-solid fa-chalkboard-user"></i> <span>Portal Guru</span>
+        <button class="nav-item nav-item-teacher" onclick="handleTeacherNavClick()" id="nav-btn-guru" title="Portal Guru Pengampu (Ibu Fatma Alawiyah, S.Pd.,Gr.)">
+          <i class="fa-solid fa-chalkboard-user"></i>
+          <span>Portal Guru</span>
         </button>
       </nav>
 
+      <!-- 3. USER PANEL & QUICK CONTROLS -->
       <div class="nav-user-panel">
-        <button class="btn btn-sm btn-teacher-quick-portal" onclick="handleTeacherNavClick()" id="quick-btn-guru" title="Portal Guru: Fatma Alawiyah, S.Pd.,Gr.">
-          <i class="fa-solid fa-chalkboard-user"></i> <span>Portal Guru</span>
-        </button>
-        <button class="btn-icon" id="sound-toggle-btn" onclick="toggleAudio()" title="Suara Efek">
+        <button class="btn-icon" id="sound-toggle-btn" onclick="toggleAudio()" title="Suara Efek Lab (Aktif/Nonaktif)">
           <i class="fa-solid fa-volume-high" id="sound-icon"></i>
         </button>
-        <div class="user-pill" id="user-pill" onclick="showUserProfileModal()">
+        <div class="user-pill" id="user-pill" onclick="showUserProfileModal()" title="Profil Lengkap Siswa">
           <span class="user-avatar-icon" id="user-display-avatar">👩‍🔬</span>
           <div class="user-info-text">
             <span class="user-name-short" id="user-display-name">Siswa</span>
@@ -525,6 +519,13 @@
 
         <!-- SUB-PAGE A: ALAT LAB 3D DENGAN AR/VR -->
         <div id="materi-sub-alat" class="materi-sub-content active">
+          
+          <!-- Mobile Landscape Helper Tip -->
+          <div class="mobile-landscape-banner" id="mobile-landscape-banner">
+            <i class="fa-solid fa-mobile-screen-button"></i>
+            <span>Tips Pengguna HP: Putar ponsel ke posisi <strong>Landscape (Mendatar)</strong> atau klik <strong>Layar Penuh</strong> untuk ruang visual 3D lebih luas!</span>
+          </div>
+
           <div class="viewer-layout-grid">
             
             <!-- LEFT COLUMN: 3D THREE.JS CANVAS & IMMERSIVE CONTROLS -->
@@ -536,20 +537,23 @@
                 </div>
                 <!-- 3D / AR / VR Action Buttons -->
                 <div class="viewer-actions">
-                  <button class="btn btn-sm btn-outline" id="btn-toggle-autorotate" onclick="toggleAutoRotate()" title="Putar Otomatis">
-                    <i class="fa-solid fa-arrows-rotate"></i> Auto-Rotate
+                  <button class="btn btn-sm btn-outline" id="btn-toggle-autorotate" onclick="toggleAutoRotate()" title="Putar Otomatis 360°">
+                    <i class="fa-solid fa-arrows-rotate"></i> <span>Putar</span>
                   </button>
                   <button class="btn btn-sm btn-outline" id="btn-xray-view" onclick="toggleXRayView()" title="Lihat Bagian / Anatomi">
-                    <i class="fa-solid fa-circle-nodes"></i> Anatomi / X-Ray
+                    <i class="fa-solid fa-circle-nodes"></i> <span>Anatomi</span>
                   </button>
                   <button class="btn btn-sm btn-purple" id="btn-mode-ar" onclick="toggleARMode()" title="Mode Augmented Reality (Kamera Nyata)">
-                    <i class="fa-solid fa-camera"></i> Mode AR
+                    <i class="fa-solid fa-camera"></i> <span>AR</span>
                   </button>
                   <button class="btn btn-sm btn-emerald" id="btn-mode-vr" onclick="toggleVRMode()" title="Mode Virtual Reality (Cardboard Stereo)">
-                    <i class="fa-solid fa-vr-cardboard"></i> Mode VR Stereo
+                    <i class="fa-solid fa-vr-cardboard"></i> <span>VR</span>
                   </button>
                   <button class="btn btn-sm btn-secondary" id="btn-speak-apparatus" onclick="speakCurrentApparatus()" title="Dengarkan Suara Penjelasan">
-                    <i class="fa-solid fa-volume-high"></i> Dengarkan
+                    <i class="fa-solid fa-volume-high"></i> <span>Suara</span>
+                  </button>
+                  <button class="btn btn-sm btn-primary" id="btn-fullscreen-3d" onclick="toggle3DFullscreen()" title="Layar Penuh 3D (Fullscreen)">
+                    <i class="fa-solid fa-expand"></i> <span>Layar Penuh</span>
                   </button>
                 </div>
               </div>
@@ -583,10 +587,17 @@
                   <p id="callout-desc">Bentuk mengerucut mencegah cairan tumpah atau memercik saat diaduk atau digoyang selama titrasi.</p>
                 </div>
 
-                <!-- Floating In-Canvas Pouring Toast / Live Status HUD -->
-                <div id="canvas-pouring-toast" class="canvas-pouring-toast">
-                  <i class="fa-solid fa-bottle-droplet fa-bounce toast-icon"></i>
-                  <span id="canvas-toast-text">Menuangkan Larutan...</span>
+                <!-- Floating Camera Zoom Quick Controls (+, Reset, -) -->
+                <div class="canvas-zoom-controls">
+                  <button class="btn-canvas-zoom" onclick="zoom3DCamera(0.85)" title="Perbesar Tampilan (Zoom In)">
+                    <i class="fa-solid fa-plus"></i>
+                  </button>
+                  <button class="btn-canvas-zoom" onclick="reset3DCameraZoom()" title="Reset Ukuran Normal">
+                    <i class="fa-solid fa-rotate-left"></i>
+                  </button>
+                  <button class="btn-canvas-zoom" onclick="zoom3DCamera(1.18)" title="Perkecil Tampilan (Zoom Out)">
+                    <i class="fa-solid fa-minus"></i>
+                  </button>
                 </div>
               </div>
 
@@ -653,41 +664,53 @@
               </div>
             </div>
 
-            <!-- RIGHT COLUMN: APPARATUS CATALOG & PEDAGOGICAL INFO -->
+            <!-- RIGHT COLUMN (50% SPLIT SCREEN): TULISAN FUNGSI & SPESIFIKASI ALAT -->
             <div class="viewer-side-col glass-panel">
               <div class="side-col-header">
-                <h4><i class="fa-solid fa-list-check"></i> Daftar Alat Laboratorium</h4>
-                <span class="badge-count" id="apparatus-count">16 Alat 3D</span>
+                <div class="side-title-group">
+                  <h4><i class="fa-solid fa-microscope color-primary"></i> Penjelasan Fungsi & Spesifikasi</h4>
+                  <span class="badge-count" id="apparatus-count">16 Alat 3D</span>
+                </div>
+                <!-- Quick Prev / Next Navigation -->
+                <div class="side-nav-btns">
+                  <button class="btn btn-sm btn-outline" onclick="prevApparatus()" title="Lihat Alat Sebelumnya">
+                    <i class="fa-solid fa-arrow-left"></i> Prev
+                  </button>
+                  <button class="btn btn-sm btn-outline" onclick="nextApparatus()" title="Lihat Alat Selanjutnya">
+                    Next <i class="fa-solid fa-arrow-right"></i>
+                  </button>
+                </div>
               </div>
 
-              <!-- Filter Selector Grid -->
-              <div class="apparatus-list-scroller" id="apparatus-catalog-list">
-                <!-- Dynamically Rendered via JS -->
-              </div>
-
-              <!-- Selected Apparatus Detailed Educational Breakdown -->
-              <div class="apparatus-detail-box glass-panel-inner" id="apparatus-educational-detail">
-                <h4><i class="fa-solid fa-microscope"></i> Informasi Spesifikasi & SOP</h4>
-                
-                <div class="detail-section">
-                  <h5><i class="fa-solid fa-circle-check"></i> Fungsi Utama:</h5>
+              <!-- Selected Apparatus Detailed Educational Breakdown (TULISAN FUNGSI LENGKAP & JELAS) -->
+              <div class="apparatus-detail-box" id="apparatus-educational-detail">
+                <div class="detail-card card-func">
+                  <h5><i class="fa-solid fa-circle-check color-emerald"></i> Fungsi Utama Alat:</h5>
                   <p id="detail-function">Digunakan untuk menampung larutan, mereaksikan zat kimia, dan sebagai wadah titrat saat titrasi.</p>
                 </div>
 
-                <div class="detail-section">
-                  <h5><i class="fa-solid fa-flask"></i> Material & Ketahanan:</h5>
+                <div class="detail-card card-mat">
+                  <h5><i class="fa-solid fa-shield-virus color-primary"></i> Material & Ketahanan Fisika/Kimia:</h5>
                   <p id="detail-material">Kaca Borosilikat (Pyrex) tahan panas hingga 500°C dan tahan goncangan termal.</p>
                 </div>
 
-                <div class="detail-section">
-                  <h5><i class="fa-solid fa-triangle-exclamation"></i> Kesalahan Umum (Common Mistakes):</h5>
+                <div class="detail-card card-mistake">
+                  <h5><i class="fa-solid fa-triangle-exclamation color-amber"></i> Kesalahan Umum yang Harus Dihindari:</h5>
                   <p id="detail-mistake">Bukan alat ukur presisi! Garis skala pada Erlenmeyer hanya bersifat estimasi perkiraan (toleransi ±5%).</p>
                 </div>
 
-                <div class="detail-section">
-                  <h5><i class="fa-solid fa-hand-holding-hand"></i> Cara Penggunaan yang Benar:</h5>
+                <div class="detail-card card-sop">
+                  <h5><i class="fa-solid fa-hand-holding-hand color-indigo"></i> Standar Prosedur Penggunaan (SOP):</h5>
                   <p id="detail-sop">Pegang leher labu dengan tiga jari saat mengaduk (swirling) larutan dengan gerakan memutar searah jarum jam.</p>
                 </div>
+              </div>
+
+              <!-- Filter Selector Grid: Katalog 16 Alat Laboratorium -->
+              <div class="catalog-section-title">
+                <h5><i class="fa-solid fa-boxes-stacked color-primary"></i> Pilih Alat Laboratorium Lainnya:</h5>
+              </div>
+              <div class="apparatus-list-scroller" id="apparatus-catalog-list">
+                <!-- Dynamically Rendered via JS -->
               </div>
             </div>
           </div>
@@ -1142,6 +1165,10 @@
                   <span>Status Reaksi:</span>
                   <span id="bunsen-boil-status">Suhu Ruang</span>
                 </div>
+                <div class="telemetry-row">
+                  <span>Gerakan Tabung:</span>
+                  <span id="bunsen-swirl-disp" class="color-amber"><i class="fa-solid fa-hand"></i> Diam (Belum Digoyang)</span>
+                </div>
               </div>
             </div>
 
@@ -1152,14 +1179,17 @@
               </div>
 
               <div class="bunsen-stage-visual">
-                <!-- Test Tube clamped over Bunsen -->
-                <div class="test-tube-heating-rig">
-                  <div class="wooden-holder">
+                <!-- Test Tube clamped over Bunsen (Interactive Swirl / Shaking) -->
+                <div class="test-tube-heating-rig" id="test-tube-heating-rig" onclick="triggerTubeShakeClick()" title="Klik atau Geser ke Kiri-Kanan untuk Menggoyangkan Tabung">
+                  <div class="swirl-interactive-indicator" id="swirl-interactive-indicator">
+                    <i class="fa-solid fa-arrows-left-right fa-fade"></i> Geser / Klik untuk Goyangkan
+                  </div>
+                  <div class="wooden-holder" id="wooden-holder">
                     <div class="clamp-jaw"></div>
                     <span class="holder-label">Penjepit Kayu</span>
                   </div>
 
-                  <div class="glass-test-tube">
+                  <div class="glass-test-tube" id="glass-test-tube">
                     <!-- Thermometer inside tube -->
                     <div class="digital-probe"></div>
                     <div class="tube-liquid" id="tube-liquid">
@@ -1204,6 +1234,9 @@
                   <button class="btn btn-outline" id="btn-bunsen-collar" onclick="toggleBunsenCollar()">
                     <i class="fa-solid fa-wind"></i> Ubah Katup Udara (Biru / Kuning)
                   </button>
+                  <button class="btn btn-outline btn-swirl" id="btn-bunsen-swirl" onclick="toggleTubeSwirling()" title="Goyangkan Tabung Reaksi dengan Penjepit Kayu (SOP Keselamatan)">
+                    <i class="fa-solid fa-water"></i> <span id="btn-swirl-label">Goyangkan Tabung</span>
+                  </button>
                   <button class="btn btn-secondary" onclick="extinguishBunsen()">
                     <i class="fa-solid fa-circle-xmark"></i> Padamkan Api
                   </button>
@@ -1226,9 +1259,9 @@
           <div class="pbl-header-badge">
             <i class="fa-solid fa-lightbulb"></i> MODEL PEMBELAJARAN PROBLEM BASED LEARNING (PBL)
           </div>
-          <h2>Investigasi Ilmiah: <span class="gradient-text">Studi Kasus Keselamatan & Presisi Alat Kimia</span></h2>
+          <h2>Investigasi Ilmiah: <span class="gradient-text">Studi Kasus Kesalahan Prosedur & K3 Laboratorium</span></h2>
           <p>
-            Dalam pembelajaran berbasis masalah (PBL), Anda ditantang menyelesaikan masalah nyata di laboratorium sekolah. Ikuti 5 sintaks PBL di bawah ini, tonton video investigasi, dan lengkapi Lembar Kerja Penyelidikan (LKPD) digital Anda!
+            Saksikan tayangan video studi kasus simulasi kesalahan di laboratorium kimia secara seksama. Identifikasi masalah yang terjadi, analisis penyebabnya, dan kembangkan solusi prosedur yang aman pada Lembar Kerja Peserta Didik (LKPD) berbasis masalah di bawah ini!
           </p>
 
           <!-- 5 Syntax PBL Stepper Tracker -->
@@ -1266,7 +1299,7 @@
             <div class="video-box-header">
               <div class="video-topic">
                 <i class="fa-brands fa-youtube color-red"></i>
-                <strong id="video-current-title">Pengenalan & Penggunaan Alat Laboratorium Kimia</strong>
+                <strong id="video-current-title">Simulasi Kesalahan dalam Laboratorium Kimia</strong>
               </div>
               <span class="badge-tag"><i class="fa-solid fa-play"></i> Video Kasus PBL</span>
             </div>
@@ -1276,7 +1309,7 @@
               <iframe 
                 id="pbl-youtube-iframe"
                 src="https://www.youtube.com/embed/VoTqIij5HHs?start=9&enablejsapi=1&rel=0" 
-                title="Video Pengenalan dan Penggunaan Alat Laboratorium Kimia" 
+                title="Video Simulasi Kesalahan dalam Laboratorium Kimia" 
                 frameborder="0" 
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
                 allowfullscreen>
@@ -1287,7 +1320,7 @@
             <div class="video-info-strip">
               <div class="video-badge-group">
                 <span class="video-tag-pill active">
-                  <i class="fa-solid fa-film"></i> Video Pembelajaran: Pengenalan & Penggunaan Alat Lab
+                  <i class="fa-solid fa-film"></i> Video Kasus PBL: Simulasi Kesalahan di Laboratorium
                 </span>
                 <span class="video-time-pill" title="Video dimulai langsung dari detik ke-9">
                   <i class="fa-solid fa-clock"></i> Dimulai Detik 00:09
@@ -1295,13 +1328,13 @@
               </div>
               <p class="video-guide-note">
                 <i class="fa-solid fa-circle-info color-primary"></i> 
-                Tonton video investigasi ini secara seksama untuk mengamati fungsi alat laboratorium, teknik pengukuran presisi, dan kaidah K3 guna melengkapi <strong>Lembar Kerja Peserta Didik (LKPD)</strong> di sebelah kanan.
+                Cermati setiap adegan dan tindakan praktikan dalam video tayangan kasus ini. Temukan pelanggaran prosedur, bahaya K3, serta alat yang disalahgunakan untuk melengkapi <strong>Lembar Kerja Peserta Didik (LKPD)</strong> di sebelah kanan.
               </p>
             </div>
 
             <!-- Single Video Controls -->
             <div class="video-playlist-bar">
-              <button class="btn btn-sm btn-primary" onclick="loadPBLVideo('VoTqIij5HHs', 'Pengenalan & Penggunaan Alat Laboratorium Kimia', 9)">
+              <button class="btn btn-sm btn-primary" onclick="loadPBLVideo('VoTqIij5HHs', 'Simulasi Kesalahan dalam Laboratorium Kimia', 9)">
                 <i class="fa-solid fa-rotate-left"></i> Putar Ulang (00:09)
               </button>
               <a href="https://youtu.be/VoTqIij5HHs?t=9" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline" title="Tonton langsung di YouTube">
@@ -1321,7 +1354,7 @@
                   <span>LEMBAR KERJA PESERTA DIDIK (LKPD) DIGITAL</span>
                 </div>
                 <h3 class="lkpd-main-heading">
-                  <i class="fa-solid fa-file-pen color-primary"></i> Penyelidikan Kasus Laboratorium Kimia
+                  <i class="fa-solid fa-file-pen color-primary"></i> Penyelidikan Kasus Berdasarkan Tayangan Video
                 </h3>
                 <p class="lkpd-sub-heading">
                   Model Pembelajaran Berbasis Masalah (PBL) • Kurikulum Merdeka Fase E / F
@@ -1354,7 +1387,7 @@
                 <i class="fa-solid fa-chalkboard-user"></i>
                 <div class="meta-content">
                   <span class="meta-label">Kelas / Fase</span>
-                  <strong class="meta-value" id="lkpd-student-class">X MIPA 1</strong>
+                  <strong class="meta-value" id="lkpd-student-class">X.1</strong>
                 </div>
               </div>
               <div class="meta-item">
@@ -1390,157 +1423,118 @@
               </div>
             </div>
 
-            <!-- Skenario Masalah Nyata (Immersive Case Investigation Card) -->
-            <div class="pbl-scenario-card-modern">
-              <div class="scenario-top-banner">
-                <div class="scenario-tag">
-                  <i class="fa-solid fa-triangle-exclamation"></i>
-                  <span>KASUS INVESTIGASI LABORATORIUM #01</span>
-                </div>
-                <div class="scenario-hazard-icons">
-                  <span class="hazard-badge" title="Zat Korosif"><i class="fa-solid fa-biohazard"></i> Korosif</span>
-                  <span class="hazard-badge warning" title="Reaksi Eksotermik Letupan"><i class="fa-solid fa-fire-flame-curved"></i> Eksoterm Tinggi</span>
-                </div>
-              </div>
-
-              <div class="scenario-body">
-                <h4 class="scenario-title">
-                  Insiden Letupan & Tumpahan Larutan pada Prosedur Pengenceran Asam Sulfat Pekat (H₂SO₄ 98%)
-                </h4>
-                
-                <div class="scenario-story-box">
-                  <i class="fa-solid fa-quote-left story-quote-icon"></i>
-                  <p>
-                    Di Laboratorium Kimia SMA, seorang praktikan hendak mengencerkan <strong>10 mL Asam Sulfat pekat (H₂SO₄ 98%)</strong>. Karena terburu-buru mengejar waktu praktikum:
-                  </p>
-                  <ul class="scenario-mistake-list">
-                    <li><i class="fa-solid fa-circle-xmark color-red"></i> Praktikan <strong>tidak mengenakan sarung tangan nitril maupun kacamata pengaman (goggles)</strong>.</li>
-                    <li><i class="fa-solid fa-circle-xmark color-red"></i> Mengukur volume 10 mL asam pekat menggunakan <strong>gelas beker besar (beaker glass 250 mL)</strong> dan bukan pipet ukur presisi.</li>
-                    <li><i class="fa-solid fa-circle-xmark color-red"></i> <strong>Menuangkan air langsung ke dalam gelas beker berisi asam pekat</strong> secara mendadak.</li>
-                  </ul>
-                  <p class="scenario-consequence">
-                    <i class="fa-solid fa-burst color-amber"></i> <strong>Dampak Insiden:</strong> Terjadi letupan mendidih seketika akibat pelepasan kalor hidrasi yang sangat besar (eksotermik), uap asam pekat membubung, dan percikan asam sulfat menyembur membasahi meja serta jari praktikan!
-                  </p>
-                </div>
-
-                <div class="scenario-quick-summary">
-                  <div class="q-sum-item">
-                    <span class="lbl"><i class="fa-solid fa-vial"></i> Reagen:</span>
-                    <span class="val">H₂SO₄ 98% (Asam Kuat Pekat)</span>
-                  </div>
-                  <div class="q-sum-item">
-                    <span class="lbl"><i class="fa-solid fa-crosshairs"></i> Target Kerja:</span>
-                    <span class="val">Pengenceran Presisi 10 mL</span>
-                  </div>
-                  <div class="q-sum-item">
-                    <span class="lbl"><i class="fa-solid fa-shield-virus"></i> Risiko:</span>
-                    <span class="val">Luka Bakar Kimia & Ledakan Uap</span>
-                  </div>
+            <!-- Panduan Kasus Berorientasi Video PBL (Kasus Cukup pada Video) -->
+            <div class="lkpd-video-guidance-card">
+              <div class="video-guide-header">
+                <i class="fa-solid fa-circle-play"></i>
+                <div class="v-guide-text">
+                  <strong>Orientasi Kasus: Amati Video Simulasi di Samping</strong>
+                  <p>Seluruh investigasi masalah pada LKPD ini berpusat langsung pada tayangan video <em>Simulasi Kesalahan dalam Laboratorium</em>. Amati secara seksama setiap tindakan praktikan, identifikasi pelanggaran K3, dan kembangkan solusi pemecahan masalah (PBL) pada 3 fase di bawah ini!</p>
                 </div>
               </div>
             </div>
 
-            <!-- Formulir Lembar Jawaban LKPD -->
+            <!-- Formulir Lembar Jawaban LKPD Berbasis Masalah (PBL) -->
             <form id="pbl-lkpd-form" onsubmit="event.preventDefault(); savePBLAnswers();">
 
-              <!-- FASE 1: Identifikasi Kesalahan Prosedural -->
+              <!-- FASE 1: Orientasi & Identifikasi Masalah Berdasarkan Video -->
               <div class="lkpd-phase-card phase-amber">
                 <div class="phase-card-header">
                   <div class="phase-icon-badge">
                     <i class="fa-solid fa-magnifying-glass-chart"></i>
                   </div>
                   <div class="phase-title-text">
-                    <span class="phase-step-tag">FASE 1 • ORIENTASI & IDENTIFIKASI</span>
-                    <h5>Identifikasi Pelanggaran K3 & Prosedur Praktikum</h5>
+                    <span class="phase-step-tag">FASE 1 • ORIENTASI & IDENTIFIKASI MASALAH</span>
+                    <h5>Identifikasi Kesalahan Prosedural & Pelanggaran K3 pada Video</h5>
                   </div>
                 </div>
 
                 <div class="phase-instruction">
-                  <p><i class="fa-solid fa-circle-question"></i> <strong>Pertanyaan Penyelidikan:</strong> Berdasarkan skenario dan video investigasi di samping, uraikan secara spesifik minimal <strong>3 kesalahan fatal</strong> yang dilakukan oleh praktikan beserta bahaya ilmiah yang ditimbulkan!</p>
+                  <p><i class="fa-solid fa-circle-question"></i> <strong>Pertanyaan Penyelidikan:</strong> Berdasarkan pengamatan Anda pada video tayangan kasus di samping, uraikan secara spesifik kesalahan-kesalahan apa saja yang dilakukan praktikan selama beraktivitas di laboratorium, serta jelaskan potensi bahaya keselamatan kerja yang dapat ditimbulkan!</p>
                 </div>
 
                 <div class="lkpd-quick-hints">
                   <span class="hints-label"><i class="fa-solid fa-wand-magic-sparkles"></i> Ide Bantuan (Klik untuk Menambahkan):</span>
-                  <button type="button" class="hint-chip" onclick="insertLKPDHint('pbl-q1', 'Tidak memakai APD pelindung (sarung tangan nitril dan goggles pelindung mata)')">+ Pelanggaran APD</button>
-                  <button type="button" class="hint-chip" onclick="insertLKPDHint('pbl-q1', 'Gelas beker bukan alat ukur volume presisi (hanya wadah penampung dengan galat tinggi)')">+ Salah Alat Ukur</button>
-                  <button type="button" class="hint-chip" onclick="insertLKPDHint('pbl-q1', 'Menuangkan air ke asam menyebabkan reaksi eksotermik dahsyat mendidihkan air seketika')">+ Bahaya Reaksi Eksoterm</button>
+                  <button type="button" class="hint-chip" onclick="insertLKPDHint('pbl-q1', 'Tidak mengenakan APD lengkap (jas lab tidak dikancing, tanpa kacamata goggle, dan tanpa sarung tangan)')">+ Pelanggaran APD</button>
+                  <button type="button" class="hint-chip" onclick="insertLKPDHint('pbl-q1', 'Perilaku bercanda, tidak tertib, dan tidak berhati-hati saat memegang alat kaca dan reagen kimia')">+ Sikap Ceroboh di Lab</button>
+                  <button type="button" class="hint-chip" onclick="insertLKPDHint('pbl-q1', 'Menghirup uap bahan kimia secara langsung dari mulut wadah tanpa teknik mengibas (wafting)')">+ Menghirup Zat Langsung</button>
+                  <button type="button" class="hint-chip" onclick="insertLKPDHint('pbl-q1', 'Meninggalkan pemanas/api spirtus yang menyala tanpa pengawasan')">+ Api Tanpa Pengawasan</button>
                 </div>
 
                 <div class="form-group-textarea">
                   <textarea 
                     id="pbl-q1" 
                     rows="4" 
-                    placeholder="Tuliskan hasil analisis identifikasi masalah Anda di sini...&#10;1. Pelanggaran APD:...&#10;2. Kesalahan pemilihan alat ukur:...&#10;3. Kesalahan fatal urutan pencampuran zat:..." 
+                    placeholder="Tuliskan hasil identifikasi masalah Anda dari video kasus di sini...&#10;1. Kesalahan penggunaan APD:...&#10;2. Tindakan ceroboh / pelanggaran prosedur:...&#10;3. Potensi bahaya ilmiah yang ditimbulkan:..." 
                     required 
                     oninput="updateLKPDProgress()"
                   ></textarea>
                 </div>
               </div>
 
-              <!-- FASE 2: Pemilihan Alat Laboratorium yang Tepat -->
+              <!-- FASE 2: Penyelidikan & Analisis Penggunaan Alat Laboratorium -->
               <div class="lkpd-phase-card phase-cyan">
                 <div class="phase-card-header">
                   <div class="phase-icon-badge">
                     <i class="fa-solid fa-flask-vial"></i>
                   </div>
                   <div class="phase-title-text">
-                    <span class="phase-step-tag">FASE 2 • ANALISIS ALAT PRESISI</span>
-                    <h5>Pemilihan Alat Laboratorium yang Tepat & Prosedur Penanganan</h5>
+                    <span class="phase-step-tag">FASE 2 • PENYELIDIKAN & ANALISIS ALAT LAB</span>
+                    <h5>Analisis Penyebab Kesalahan, Penggunaan Alat Lab, & Dampak Ilmiah</h5>
                   </div>
                 </div>
 
                 <div class="phase-instruction">
-                  <p><i class="fa-solid fa-circle-question"></i> <strong>Pertanyaan Penyelidikan:</strong> Mengapa gelas beker <em>tidak boleh</em> digunakan untuk menakar 10 mL asam pekat? Sebutkan kombinasi alat gelas laboratorium yang wajib dipakai agar pengambilan cairan berlangsung tepat, presisi, dan aman!</p>
+                  <p><i class="fa-solid fa-circle-question"></i> <strong>Pertanyaan Penyelidikan:</strong> Mengapa kesalahan atau insiden pada video tersebut dapat terjadi? Analisislah jenis alat laboratorium dan zat kimia yang terlibat, serta jelaskan apa saja ketidaktepatan pemilihan fungsi alat atau teknik pengoperasiannya yang memicu terjadinya masalah!</p>
                 </div>
 
                 <div class="lkpd-quick-hints">
                   <span class="hints-label"><i class="fa-solid fa-wand-magic-sparkles"></i> Ide Bantuan (Klik untuk Menambahkan):</span>
-                  <button type="button" class="hint-chip" onclick="insertLKPDHint('pbl-q2', 'Gelas beker memiliki toleransi ketelitian rendah (toleransi ±5%)')">+ Toleransi Beaker Rendah</button>
-                  <button type="button" class="hint-chip" onclick="insertLKPDHint('pbl-q2', 'Wajib menggunakan Pipet Volumetrik / Pipet Ukur 10 mL yang memiliki kalibrasi presisi tinggi')">+ Pipet Volumetrik 10 mL</button>
-                  <button type="button" class="hint-chip" onclick="insertLKPDHint('pbl-q2', 'Gunakan Rubber Bulb / Filler karet penyedot (dilarang keras menghisap dengan mulut)')">+ Rubber Bulb / Filler</button>
-                  <button type="button" class="hint-chip" onclick="insertLKPDHint('pbl-q2', 'Menggunakan Labu Ukur (Volumetric Flask) untuk wadah labu pengenceran akhir')">+ Labu Ukur</button>
+                  <button type="button" class="hint-chip" onclick="insertLKPDHint('pbl-q2', 'Ketidaktepatan pemilihan alat ukur (menggunakan wadah penampung biasa untuk menakar volume presisi)')">+ Salah Pemilihan Alat</button>
+                  <button type="button" class="hint-chip" onclick="insertLKPDHint('pbl-q2', 'Teknik penuangan cairan dan pemanasan larutan yang tidak sesuai arah aman (menghadap ke diri sendiri/teman)')">+ Teknik Penggunaan Keliru</button>
+                  <button type="button" class="hint-chip" onclick="insertLKPDHint('pbl-q2', 'Kurang memahami piktogram simbol bahaya GHS dan sifat reaktif bahan kimia yang digunakan')">+ Mengabaikan Simbol Bahaya</button>
                 </div>
 
                 <div class="form-group-textarea">
                   <textarea 
                     id="pbl-q2" 
                     rows="4" 
-                    placeholder="Tuliskan analisis alat laboratorium yang tepat di sini...&#10;Alasan gelas beker tidak tepat:...&#10;Alat ukur presisi yang seharusnya digunakan:...&#10;Alat bantu pengaman tambahan yang diperlukan:..." 
+                    placeholder="Tuliskan analisis penyebab masalah dari video di sini...&#10;• Faktor pemicu kesalahan praktikan:...&#10;• Alat lab yang disalahgunakan dan fungsi semestinya:...&#10;• Dampak kegagalan eksperimen atau risiko kecelakaan:..." 
                     required 
                     oninput="updateLKPDProgress()"
                   ></textarea>
                 </div>
               </div>
 
-              <!-- FASE 3: Solusi SOP & Pertolongan Pertama -->
+              <!-- FASE 3: Pengembangan Solusi Prosedur Aman & SOP K3 -->
               <div class="lkpd-phase-card phase-emerald">
                 <div class="phase-card-header">
                   <div class="phase-icon-badge">
                     <i class="fa-solid fa-shield-halved"></i>
                   </div>
                   <div class="phase-title-text">
-                    <span class="phase-step-tag">FASE 3 • SOLUSI SOP & PERTOLONGAN PERTAMA (P3K)</span>
-                    <h5>Rencana Solusi SOP Pengenceran Asam & Tanggap Darurat</h5>
+                    <span class="phase-step-tag">FASE 3 • PENGEMBANGAN SOLUSI & SOP K3</span>
+                    <h5>Rencana Solusi Prosedural yang Benar, SOP K3, & Tanggap Darurat</h5>
                   </div>
                 </div>
 
                 <div class="phase-instruction">
-                  <p><i class="fa-solid fa-circle-question"></i> <strong>Pertanyaan Penyelidikan:</strong> Bagaimana rumusan Standar Operasional Prosedur (SOP) pengenceran asam pekat yang benar menurut kaidah keselamatan kerja kimia? Serta apa langkah tanggap darurat (First Aid) yang harus segera dilakukan saat kulit praktikan terkena percikan asam?</p>
+                  <p><i class="fa-solid fa-circle-question"></i> <strong>Pertanyaan Penyelidikan:</strong> Sebagai praktikan yang menerapkan model Problem Based Learning (PBL), rumuskanlah Standar Operasional Prosedur (SOP) yang benar untuk mencegah terulangnya kesalahan pada video! Jelaskan langkah kerja yang tepat serta prosedur tanggap darurat (First Aid) jika kecelakaan serupa terjadi!</p>
                 </div>
 
                 <div class="lkpd-quick-hints">
                   <span class="hints-label"><i class="fa-solid fa-wand-magic-sparkles"></i> Ide Bantuan (Klik untuk Menambahkan):</span>
-                  <button type="button" class="hint-chip" onclick="insertLKPDHint('pbl-q3', 'Kaidah Emas AA: Selalu tuangkan Asam pekat ke dalam Air secara perlahan (Acid into Water), jangan sebaliknya')">+ Kaidah AA (Asam ke Air)</button>
-                  <button type="button" class="hint-chip" onclick="insertLKPDHint('pbl-q3', 'Tuangkan asam perlahan mengalir di dinding wadah sambil diaduk konstan menggunakan batang pengaduk')">+ Alirkan & Aduk Konstan</button>
-                  <button type="button" class="hint-chip" onclick="insertLKPDHint('pbl-q3', 'Tanggap darurat: Segera bilas kulit di bawah air mengalir bersih (safety shower/wastafel) minimal 15-20 menit terus menerus')">+ Bilas Air Mengalir 15-20 Menit</button>
-                  <button type="button" class="hint-chip" onclick="insertLKPDHint('pbl-q3', 'Lepaskan pakaian yang terkontaminasi dan segera laporkan kepada guru pembimbing laboratorium')">+ Lepas Pakaian Terkontaminasi</button>
+                  <button type="button" class="hint-chip" onclick="insertLKPDHint('pbl-q3', 'Kewajiban kepatuhan SOP APD lengkap (jas lab, goggles pelindung, sarung tangan) sebelum memulai pekerjaan')">+ Kewajiban SOP APD</button>
+                  <button type="button" class="hint-chip" onclick="insertLKPDHint('pbl-q3', 'Mengikuti urutan prosedur pencampuran dan pemanasan zat secara berhati-hati sesuai modul resmi')">+ SOP Urutan Kerja Aman</button>
+                  <button type="button" class="hint-chip" onclick="insertLKPDHint('pbl-q3', 'Tanggap darurat First Aid: Segera bilas dengan air mengalir bersih selama 15-20 menit jika terpapar dan segera lapor guru')">+ Bilas Air Mengalir 15-20 Menit</button>
+                  <button type="button" class="hint-chip" onclick="insertLKPDHint('pbl-q3', 'Membersihkan alat kaca dengan akuades serta membuang sisa reagen ke wadah limbah B3 yang sesuai')">+ Pengelolaan Limbah B3</button>
                 </div>
 
                 <div class="form-group-textarea">
                   <textarea 
                     id="pbl-q3" 
                     rows="4" 
-                    placeholder="Tuliskan SOP pengenceran asam pekat dan prosedur tanggap darurat di sini...&#10;SOP pengenceran yang benar (Prinsip AA):...&#10;Tindakan darurat pertolongan pertama (First Aid):..." 
+                    placeholder="Tuliskan rancangan solusi dan SOP yang benar di sini...&#10;• Langkah kerja aman yang seharusnya dilakukan:...&#10;• SOP pencegahan keselamatan kerja di lab:...&#10;• Tindakan pertolongan pertama (First Aid) jika insiden terjadi:..." 
                     required 
                     oninput="updateLKPDProgress()"
                   ></textarea>
@@ -2081,9 +2075,8 @@
                     <option value="X.1">Kelas X.1</option>
                     <option value="X.2">Kelas X.2</option>
                     <option value="X.3">Kelas X.3</option>
-                    <option value="X MIPA 1">Kelas X MIPA 1</option>
-                    <option value="XI MIPA 1">Kelas XI MIPA 1</option>
-                    <option value="XII MIPA 1">Kelas XII MIPA 1</option>
+                    <option value="X.4">Kelas X.4</option>
+                    <option value="X.5">Kelas X.5</option>
                   </select>
                   <select id="teacher-filter-predicate" onchange="filterTeacherSubmissions()">
                     <option value="ALL">Semua Predikat</option>

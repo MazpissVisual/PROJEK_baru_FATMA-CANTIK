@@ -557,8 +557,12 @@ function init3DLabEngine() {
   // Load Initial Model (Erlenmeyer)
   loadApparatusModel('erlenmeyer');
 
-  // Handle Resize
+  // Handle Window Resize & Mobile Orientation Change (Landscape / Portrait)
   window.addEventListener('resize', onWindowResize3D);
+  window.addEventListener('orientationchange', () => {
+    setTimeout(onWindowResize3D, 100);
+    setTimeout(onWindowResize3D, 350);
+  });
 
   // Start Animation Loop
   animate3DLoop();
@@ -678,7 +682,7 @@ function renderSceneFrame() {
 }
 
 /**
- * Handle Window / Canvas Resizing
+ * Handle Window / Canvas Resizing with Auto-Framing
  */
 function onWindowResize3D() {
   const container = document.getElementById('canvas-3d-wrapper');
@@ -688,10 +692,16 @@ function onWindowResize3D() {
 
   const width = container.clientWidth;
   const height = container.clientHeight;
+  if (width === 0 || height === 0) return;
 
   camera.aspect = width / height;
   camera.updateProjectionMatrix();
   renderer.setSize(width, height);
+
+  // Auto-refit current apparatus model to match new viewport width/height & aspect ratio
+  if (Lab3DState.currentModelGroup) {
+    fitApparatusInView(Lab3DState.currentModelGroup);
+  }
 }
 
 /**
@@ -772,12 +782,12 @@ function createSteelMaterial(color = 0x94a3b8) {
 }
 
 /**
- * Auto-Framing Function: Ensures Entire Model Fits in Viewport Without Any Cropping!
+ * Auto-Framing Function: Ensures Entire Model Fits in Viewport With Natural, Balanced Perspective!
  */
 function fitApparatusInView(group) {
   if (!Lab3DState.camera || !group) return;
 
-  // Compute bounding box
+  // Compute bounding box of the apparatus
   const box = new THREE.Box3().setFromObject(group);
   const size = new THREE.Vector3();
   const center = new THREE.Vector3();
@@ -789,20 +799,33 @@ function fitApparatusInView(group) {
   group.position.y = -center.y;
   group.position.z = -center.z;
 
-  // Calculate required camera distance with generous padding (1.6x)
-  const maxDim = Math.max(size.x, size.y, size.z);
-  const fov = Lab3DState.camera.fov * (Math.PI / 180);
-  let cameraZ = (maxDim / 2) / Math.tan(fov / 2);
-  cameraZ *= 1.62; // 62% breathing margin so tall burette / stand is 100% visible
+  const camera = Lab3DState.camera;
+  const aspect = (camera.aspect && camera.aspect > 0) ? camera.aspect : 1.0;
+  const fovY = (camera.fov * Math.PI) / 180;
+  // Calculate horizontal FOV based on current canvas aspect ratio
+  const fovX = 2 * Math.atan(Math.tan(fovY / 2) * aspect);
 
-  // Position camera smoothly
-  Lab3DState.camera.position.set(0, maxDim * 0.15, Math.max(cameraZ, 13));
-  Lab3DState.camera.lookAt(0, 0, 0);
+  // Compute required distance to fit both height (size.y) and horizontal span (size.x, size.z)
+  const distY = (size.y / 2) / Math.tan(fovY / 2);
+  const distX = (Math.max(size.x, size.z) / 2) / Math.tan(fovX / 2);
+
+  let cameraDist = Math.max(distY, distX);
+
+  // Balanced 1.45x framing factor: gives comfortable margins so apparatus sits naturally on the workbench
+  cameraDist *= 1.45;
+
+  // Natural minimum distance clamp (9.5) so small objects are not over-zoomed
+  const targetDist = Math.max(cameraDist, 9.5);
+
+  // Position camera smoothly facing apparatus with natural slight elevation looking slightly downward
+  const elevateY = Math.max(size.y * 0.12, 1.2);
+  camera.position.set(0, elevateY, targetDist);
+  camera.lookAt(0, 0, 0);
 
   if (Lab3DState.controls) {
     Lab3DState.controls.target.set(0, 0, 0);
-    Lab3DState.controls.minDistance = 4;
-    Lab3DState.controls.maxDistance = 50;
+    Lab3DState.controls.minDistance = 3.5;
+    Lab3DState.controls.maxDistance = 55;
     Lab3DState.controls.update();
   }
 }
@@ -2721,3 +2744,92 @@ function speakCurrentApparatus() {
     }
   }
 }
+
+/**
+ * Navigate to Next Apparatus in Catalog
+ */
+function nextApparatus() {
+  const currentIdx = ApparatusCatalog.findIndex(item => item.id === Lab3DState.currentApparatusId);
+  const nextIdx = (currentIdx + 1) % ApparatusCatalog.length;
+  selectApparatus(ApparatusCatalog[nextIdx].id);
+}
+
+/**
+ * Navigate to Previous Apparatus in Catalog
+ */
+function prevApparatus() {
+  const currentIdx = ApparatusCatalog.findIndex(item => item.id === Lab3DState.currentApparatusId);
+  const prevIdx = (currentIdx - 1 + ApparatusCatalog.length) % ApparatusCatalog.length;
+  selectApparatus(ApparatusCatalog[prevIdx].id);
+}
+
+/**
+ * Toggle Fullscreen View for 3D Lab Canvas (Laptop & HP Landscape/Portrait)
+ */
+function toggle3DFullscreen() {
+  const container = document.getElementById('canvas-3d-wrapper');
+  if (!container) return;
+
+  if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+    if (container.requestFullscreen) {
+      container.requestFullscreen();
+    } else if (container.webkitRequestFullscreen) {
+      container.webkitRequestFullscreen();
+    } else if (container.msRequestFullscreen) {
+      container.msRequestFullscreen();
+    }
+  } else {
+    if (document.exitFullscreen) {
+      document.exitFullscreen();
+    } else if (document.webkitExitFullscreen) {
+      document.webkitExitFullscreen();
+    }
+  }
+}
+
+// Fullscreen state change listener
+document.addEventListener('fullscreenchange', handle3DFullscreenState);
+document.addEventListener('webkitfullscreenchange', handle3DFullscreenState);
+
+function handle3DFullscreenState() {
+  const isFull = !!(document.fullscreenElement || document.webkitFullscreenElement);
+  const btn = document.getElementById('btn-fullscreen-3d');
+  if (btn) {
+    btn.innerHTML = isFull
+      ? '<i class="fa-solid fa-compress"></i> <span>Normal</span>'
+      : '<i class="fa-solid fa-expand"></i> <span>Layar Penuh</span>';
+    if (isFull) {
+      btn.classList.add('active');
+    } else {
+      btn.classList.remove('active');
+    }
+  }
+  setTimeout(onWindowResize3D, 120);
+}
+
+/**
+ * Interactive Camera Zoom Controller (+ / - / Reset)
+ */
+function zoom3DCamera(factor = 1.15) {
+  const camera = Lab3DState.camera;
+  const controls = Lab3DState.controls;
+  if (!camera || !controls) return;
+
+  const target = controls.target;
+  const direction = new THREE.Vector3().subVectors(camera.position, target);
+  direction.multiplyScalar(factor);
+
+  const newDist = direction.length();
+  if (newDist >= 3.5 && newDist <= 55) {
+    camera.position.copy(target).add(direction);
+    controls.update();
+  }
+}
+
+function reset3DCameraZoom() {
+  if (Lab3DState.currentModelGroup) {
+    fitApparatusInView(Lab3DState.currentModelGroup);
+  }
+}
+
+

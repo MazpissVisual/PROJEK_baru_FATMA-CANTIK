@@ -39,7 +39,8 @@ const PracticumState = {
     collarMode: 'blue', // 'blue' (hot) or 'yellow' (sooty)
     currentTemp: 27.0,
     tempIntervalId: null,
-    isBoiling: false
+    isBoiling: false,
+    isSwirling: false
   }
 };
 
@@ -52,6 +53,7 @@ function initPracticumWorkbench() {
   updateTitrationUI();
   updateMeniscusUI();
   updateBunsenUI();
+  initTestTubeDrag();
 }
 
 /**
@@ -582,13 +584,36 @@ function updateBunsenHeatingTick() {
   b.currentTemp = Math.min(100.0, parseFloat((b.currentTemp + rate).toFixed(1)));
 
   const bubbles = document.getElementById('boil-bubbles');
+  const rig = document.getElementById('test-tube-heating-rig');
+  const fb = document.getElementById('bunsen-feedback');
+
   if (b.currentTemp >= 95.0) {
     b.isBoiling = true;
     if (bubbles) bubbles.classList.add('active');
     playWebAudioTone('bubble');
+
+    // Bumping detection if boiling without shaking!
+    if (!b.isSwirling && rig) {
+      rig.classList.add('bumping-warning');
+      if (fb) {
+        fb.innerHTML = '<i class="fa-solid fa-burst color-red"></i> <strong>BAHAYA BUMPING!</strong> Cairan mendidih tanpa digoyang! Goyangkan tabung reaksi dengan penjepit kayu sekarang agar tidak meletup menyembur!';
+      }
+    } else if (b.isSwirling && rig) {
+      rig.classList.remove('bumping-warning');
+      if (fb) {
+        fb.innerHTML = '<i class="fa-solid fa-circle-check color-emerald"></i> <strong>Mendidih Sempurna:</strong> Tabung reaksi digoyangkan dengan baik, kalor merata tanpa letupan (bumping).';
+      }
+    }
+  } else if (b.currentTemp >= 70.0) {
+    b.isBoiling = false;
+    if (bubbles) bubbles.classList.remove('active');
+    if (!b.isSwirling && fb) {
+      fb.innerHTML = '<i class="fa-solid fa-triangle-exclamation color-amber"></i> Suhu mencapai 70°C. <strong>SOP:</strong> Goyangkan tabung dengan penjepitnya agar pemanasan merata!';
+    }
   } else {
     b.isBoiling = false;
     if (bubbles) bubbles.classList.remove('active');
+    if (rig) rig.classList.remove('bumping-warning');
   }
 
   updateBunsenUI();
@@ -599,6 +624,7 @@ function updateBunsenUI() {
   const tempDisp = document.getElementById('bunsen-temp-disp');
   const flameType = document.getElementById('bunsen-flame-type');
   const boilStatus = document.getElementById('bunsen-boil-status');
+  const swirlDisp = document.getElementById('bunsen-swirl-disp');
 
   if (tempDisp) tempDisp.textContent = `${b.currentTemp.toFixed(1)} °C`;
   if (flameType) {
@@ -626,6 +652,150 @@ function updateBunsenUI() {
       boilStatus.className = '';
     }
   }
+
+  if (swirlDisp) {
+    if (b.isSwirling) {
+      swirlDisp.innerHTML = '<i class="fa-solid fa-water fa-bounce"></i> Digoyangkan (Aman)';
+      swirlDisp.className = 'color-emerald';
+    } else {
+      swirlDisp.innerHTML = '<i class="fa-solid fa-pause"></i> Diam (Belum Digoyang)';
+      swirlDisp.className = 'color-amber';
+    }
+  }
+}
+
+/**
+ * Toggle Test Tube Swirling / Shaking with Wooden Clamp (SOP Pemanasan Kimia)
+ */
+function toggleTubeSwirling() {
+  const b = PracticumState.bunsen;
+  b.isSwirling = !b.isSwirling;
+  applyTubeSwirlingState(b.isSwirling);
+  playWebAudioTone('bubble');
+}
+
+function applyTubeSwirlingState(active) {
+  const rig = document.getElementById('test-tube-heating-rig');
+  const btn = document.getElementById('btn-bunsen-swirl');
+  const btnLabel = document.getElementById('btn-swirl-label');
+  const swirlDisp = document.getElementById('bunsen-swirl-disp');
+  const fb = document.getElementById('bunsen-feedback');
+
+  if (rig) {
+    if (active) {
+      rig.classList.add('swirling');
+      rig.classList.remove('bumping-warning');
+    } else {
+      rig.classList.remove('swirling');
+    }
+  }
+
+  if (btn) {
+    if (active) {
+      btn.classList.add('active', 'btn-primary');
+      btn.classList.remove('btn-outline');
+    } else {
+      btn.classList.remove('active', 'btn-primary');
+      btn.classList.add('btn-outline');
+    }
+  }
+
+  if (btnLabel) {
+    btnLabel.textContent = active ? 'Hentikan Goyangan' : 'Goyangkan Tabung';
+  }
+
+  if (swirlDisp) {
+    if (active) {
+      swirlDisp.innerHTML = '<i class="fa-solid fa-water fa-bounce"></i> Digoyangkan (Aman)';
+      swirlDisp.className = 'color-emerald';
+    } else {
+      swirlDisp.innerHTML = '<i class="fa-solid fa-pause"></i> Diam (Belum Digoyang)';
+      swirlDisp.className = 'color-amber';
+    }
+  }
+
+  if (fb && PracticumState.bunsen.isIgnited) {
+    if (active) {
+      fb.innerHTML = '<i class="fa-solid fa-circle-check color-emerald"></i> <strong>SOP Berhasil:</strong> Tabung reaksi digoyangkan dengan penjepit kayu secara berkala untuk meratakan panas dan mencegah letupan mendadak (bumping).';
+    } else {
+      fb.innerHTML = '<i class="fa-solid fa-triangle-exclamation color-amber"></i> Tabung berhenti digoyang. Ingat untuk menggoyangkannya kembali agar pemanasan tetap aman.';
+    }
+  }
+}
+
+/**
+ * Click to trigger quick shake if user clicks on the rig
+ */
+function triggerTubeShakeClick() {
+  const b = PracticumState.bunsen;
+  toggleTubeSwirling();
+}
+
+/**
+ * Setup Mouse & Touch Dragging on Test Tube Rig with Wooden Clamp
+ */
+function initTestTubeDrag() {
+  const rig = document.getElementById('test-tube-heating-rig');
+  if (!rig) return;
+
+  let isDragging = false;
+  let startX = 0;
+  let currentX = 0;
+
+  const onStart = (e) => {
+    isDragging = true;
+    startX = e.clientX || (e.touches && e.touches[0].clientX) || 0;
+    currentX = 0;
+    rig.classList.remove('swirling');
+    rig.style.transition = 'none';
+  };
+
+  const onMove = (e) => {
+    if (!isDragging) return;
+    const clientX = e.clientX || (e.touches && e.touches[0].clientX) || 0;
+    const dx = clientX - startX;
+    currentX = Math.max(-45, Math.min(45, dx));
+    const angle = (currentX / 45) * 15;
+    rig.style.transform = `translateX(${currentX}px) rotate(${angle}deg)`;
+
+    // Liquid slosh effect
+    const liquid = document.getElementById('tube-liquid');
+    if (liquid) {
+      liquid.style.transform = `rotate(${-angle * 1.3}deg)`;
+    }
+
+    // Mark as swirling while actively dragging
+    PracticumState.bunsen.isSwirling = true;
+    const swirlDisp = document.getElementById('bunsen-swirl-disp');
+    if (swirlDisp) {
+      swirlDisp.innerHTML = '<i class="fa-solid fa-water fa-bounce"></i> Digoyangkan Manual (Aman)';
+      swirlDisp.className = 'color-emerald';
+    }
+  };
+
+  const onEnd = () => {
+    if (!isDragging) return;
+    isDragging = false;
+    rig.style.transition = 'transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)';
+    rig.style.transform = '';
+    const liquid = document.getElementById('tube-liquid');
+    if (liquid) liquid.style.transform = '';
+
+    // If swirling was toggled on, resume CSS animation
+    if (PracticumState.bunsen.isSwirling) {
+      setTimeout(() => {
+        rig.classList.add('swirling');
+      }, 400);
+    }
+  };
+
+  rig.addEventListener('mousedown', onStart);
+  window.addEventListener('mousemove', onMove);
+  window.addEventListener('mouseup', onEnd);
+
+  rig.addEventListener('touchstart', onStart, { passive: true });
+  window.addEventListener('touchmove', onMove, { passive: true });
+  window.addEventListener('touchend', onEnd);
 }
 
 function resetBunsen() {
@@ -633,5 +803,7 @@ function resetBunsen() {
   PracticumState.bunsen.currentTemp = 27.0;
   PracticumState.bunsen.collarMode = 'blue';
   PracticumState.bunsen.isGasOpen = true;
+  PracticumState.bunsen.isSwirling = false;
+  applyTubeSwirlingState(false);
   updateBunsenUI();
 }
